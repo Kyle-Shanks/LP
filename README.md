@@ -65,17 +65,17 @@ The display API is a collection of methods written to light up and turn off diff
 
 - `::clear` - Turn off all of the lights on the Launchpad
 - `::clearGrid` - Turn off the lights of the main 8x8 grid
-- `::setButtonColor` - Set the color of a specific button (Arguments: buttonId, colorId, colorType)
-- `::setGroupColor` - Set the color of a group of buttons (Arguments: buttonIdArray, colorId, colorType)
-- `::setRowColor` - Set the color of a row of buttons (Arguments: rowId, colorId, colorType)
-- `::setColumnColor` - Set the color of a column of buttons (Arguments: columnId, colorId, colorType)
-- `::setGridColor` - Set the color of all grid button (Arguments: colorId, colorType)
-- `::setRightColumnColor` - Set the color of the right row of circular buttons (Arguments: colorId, colorType)
-- `::setTopRowColor` - Set the color of the top row of circular buttons (Arguments: colorId, colorType)
-- `::setArrowColor` - Set the color of the arrow buttons in the top row (Arguments: colorId, colorType)
-- `::setModeColor` - Set the color of the mode buttons in the top row (Arguments: colorId, colorType)
-- `::setQuadrantColor` - Set the color of a specific quadrant of the main grid (Arguments: quadrantId, colorId, colorType)
-- `::setAllColor` - Set the color of all buttons on the Launchpad (Arguments: colorId, colorType)
+- `::setButton` - Set the color of a specific button (Arguments: buttonId, colorId, colorType)
+- `::setGroup` - Set the color of a group of buttons (Arguments: buttonIdArray, colorId, colorType)
+- `::setRow` - Set the color of a row of buttons (Arguments: rowId, colorId, colorType)
+- `::setColumn` - Set the color of a column of buttons (Arguments: columnId, colorId, colorType)
+- `::setGrid` - Set the color of all grid button (Arguments: colorId, colorType)
+- `::setRightColumn` - Set the color of the right row of circular buttons (Arguments: colorId, colorType)
+- `::setTopRow` - Set the color of the top row of circular buttons (Arguments: colorId, colorType)
+- `::setArrows` - Set the color of the arrow buttons in the top row (Arguments: colorId, colorType)
+- `::setModeButtons` - Set the color of the mode buttons in the top row (Arguments: colorId, colorType)
+- `::setQuadrant` - Set the color of a specific quadrant of the main grid (Arguments: quadrantId, colorId, colorType)
+- `::setAll` - Set the color of all buttons on the Launchpad (Arguments: colorId, colorType)
 
 The `colorId` argument corresponds to the color ids assigned to the Launchpad. This argument will default to 0, which will turn off the button.
 Note: (A list of the colors by id if available in LP.colors)
@@ -101,8 +101,44 @@ Along with the the methods above, there are also a few helpful variables defined
   - `'right'` - Button ids for the eight circular buttons to the right of the main grid
   - `'quadrant'` - This is an array containing four arrays, each with the button ids for the four quadrants of the main grid. The order of the quadrants goes top-left (0), top-right (1), bottom-left (2), and bottom-right (3).
 
-## Usage
+## Usage Examples
 
 Once a connection to the Launchpad has been established, the built-in methods will allow you to send messages to the launchpad and set up event listeners and callbacks for messages received from inputs through the Launchpad.
 
 *** Usage examples coming soon ***
+
+Ex: If you have an 8x8 2D array corresponding to the grid buttons of the Launchpad and you would like to update the values based on inputs from the Launchpad, you could do the following:
+
+```javascript
+  // 8x8 matrix
+  const matrix = Array(8).fill().map(el => Array(8).fill(0));
+
+  // Connecting to Launchpad
+  LP.connect().then(connectionCallback);
+
+  function connectionCallback() {
+    LP.on('midimessage', msgCallback);
+  }
+
+  function msgCallback(msg) {
+    // Check for grid or right column button
+    if (msg.data[0] === 144) {
+      const row = 8 - (Math.floor(msg.data[1]/10));
+      const col = (msg.data[1]%10) - 1;
+
+      LP.setButton(msg.data[1], msg.data[2]);
+
+      // Check for right column button
+      if (col === 8) {
+        LP.setRow(row, msg.data[2]);
+        matrix[row].fill(msg.data[2] ? 1 : 0);
+      } else {
+        matrix[row][col] = (msg.data[2] ? 1 : 0);
+      }
+    }
+  }
+```
+
+This will set the position on the matrix to 1 whenever the corresponding button on the Launchpad is pressed, and will set it back to 0 whenever that button is released. If a circular button on the right column is pressed, the entire row will be set to 1.
+
+This will also light up the buttons on the Launchpad as long as they are being pressed down, which is helpful for instant visual feedback for the user.
