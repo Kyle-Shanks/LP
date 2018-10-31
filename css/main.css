@@ -1,0 +1,14 @@
+body {
+  background-color: #fafafa;
+}
+.canvas-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#cnv {
+  height: 500px;
+  width: 500px;
+  border: 1px solid #000;
+}
