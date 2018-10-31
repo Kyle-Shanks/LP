@@ -2,7 +2,7 @@
 This is LP. A javascript library written to connect and interact with the Novation Launchpad MKII directly from the browser.
 
 ## Description
-LP was made simply as an API to interact with the Launchpad MK2. It can be used to set up callbacks for the various events tied to the Launchpad and has a number of methods defined to light up the Launchpad for visual feedback to inputs. The goal was to make the API as open and flexible as possible to allow it to be used in a wide variety of projects. 
+LP was made simply as an API to interact with the Launchpad MK2. It can be used to set up callbacks for the various events tied to the Launchpad and has a number of methods defined to light up the Launchpad for visual feedback to inputs. The goal was to make the API as open and flexible as possible to allow it to be used in a wide variety of projects.
 
 The simple playground that was set up in the `script.js` and `canvas.js` files is to show how the launchpad can be used to interact directly with multiple matrices and how this can be used in conjunction with HTML5 canvas for visual feedback within the browser.
 
@@ -48,7 +48,7 @@ The main methods for configuration are the following:
   LP.on('press', msg => console.log(msg));
   LP.on('onmidimessage', midiMessageCallback);
   LP.on('onstatechange', event => console.log("LP State: " + event.port.state));
-  
+
   const midiMessageCallback = msg => {
     if (msg.data[2]) {
       console.log(`Button ${msg.data[1]} was pressed.`);
@@ -57,7 +57,7 @@ The main methods for configuration are the following:
     }
   };
 ```
-The available Launchpad events are `'onstatechange'`, `'onmidimessage'`, `'press'`, and `'release'`
+The available Launchpad events are `'statechange'`, `'midimessage'`, `'press'`, and `'release'`
 
 ### Display API
 
@@ -77,14 +77,14 @@ The display API is a collection of methods written to light up and turn off diff
 - `::setQuadrantColor` - Set the color of a specific quadrant of the main grid (Arguments: quadrantId, colorId, colorType)
 - `::setAllColor` - Set the color of all buttons on the Launchpad (Arguments: colorId, colorType)
 
-The `colorId` argument corresponds to the color ids assigned to the Launchpad. This argument will default to 0, which will turn off the button. 
+The `colorId` argument corresponds to the color ids assigned to the Launchpad. This argument will default to 0, which will turn off the button.
 Note: (A list of the colors by id if available in LP.colors)
 
-The `colorType` argument that all of the coloring methods take will determine the behavior of the button once it is lit. The options are: 
+The `colorType` argument that all of the coloring methods take will determine the behavior of the button once it is lit. The options are:
   - `'solid'` - This will simply set the button color. This is the default setting.
   - `'flash'` - This will have the button flash on and off
   - `'pulse'` - This will have the button fade in and out
-  
+
 
 ### Helpful Variables
 
@@ -92,14 +92,14 @@ Along with the the methods above, there are also a few helpful variables defined
 
 - `::colors` - This is a list of all of the colors available on the Launchpad with the position in the array corresponding to that color's id.
 
-- `::buttons` - This is an object that hold various arrays of button ids corresponding to different sections on the Launchpad. This can be used as a quick and convenient source for the ids of different groups of buttons. These groups include: 
+- `::buttons` - This is an object that hold various arrays of button ids corresponding to different sections on the Launchpad. This can be used as a quick and convenient source for the ids of different groups of buttons. These groups include:
   - `'all'` - A list of all of the button ids
   - `'grid'` - Button ids for the main 8x8 grid
   - `'top'` - Button ids for the top row of circular buttons
   - `'mode'` - Button ids for the four mode buttons of the top row
   - `'arrow'` - Button ids for the four arrow buttons of the top row
   - `'right'` - Button ids for the eight circular buttons to the right of the main grid
-  - `'quadrant'` - This is an array containing four arrays, each with the button ids for the four quadrants of the main grid. The order of the quadrants goes top-left (0), top-right (1), bottom-left (2), and bottom-right (3). 
+  - `'quadrant'` - This is an array containing four arrays, each with the button ids for the four quadrants of the main grid. The order of the quadrants goes top-left (0), top-right (1), bottom-left (2), and bottom-right (3).
 
 ## Usage
 
