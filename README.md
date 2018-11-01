@@ -1,6 +1,8 @@
 # LP
 This is LP. A javascript library written to connect and interact with the Novation Launchpad MKII directly from the browser.
 
+![LP Screenshot](images/screenshot.png)
+
 ## Description
 LP was made simply as an API to interact with the Launchpad MK2. It can be used to set up callbacks for the various events tied to the Launchpad and has a number of methods defined to light up the Launchpad for visual feedback to inputs. The goal was to make the API as open and flexible as possible to allow it to be used in a wide variety of projects.
 
